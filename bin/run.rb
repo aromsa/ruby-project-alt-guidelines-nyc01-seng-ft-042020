@@ -1,8 +1,8 @@
 require_relative '../config/environment'
 
-run
+# run
 
-# cli = CommandLineInterface.new
+cli = CLI.new.run
 # cli.greet
 # cli.menu
 # cli.pescatarian
