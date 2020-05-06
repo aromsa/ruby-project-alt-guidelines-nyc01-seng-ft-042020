@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_180455) do
+ActiveRecord::Schema.define(version: 2020_05_06_151504) do
 
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 2020_05_05_180455) do
   create_table "recipes", force: :cascade do |t|
     t.string "name"
     t.string "directions"
-    t.boolean "vegeterian?"
     t.boolean "pescatarian?"
     t.boolean "gluten_free?"
+    t.boolean "vegetarian?"
   end
 
   create_table "users", force: :cascade do |t|

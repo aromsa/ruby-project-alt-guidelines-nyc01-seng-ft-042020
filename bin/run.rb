@@ -1,7 +1,6 @@
 require_relative '../config/environment'
 
 run
-pescatarian
 
 # cli = CommandLineInterface.new
 # cli.greet
