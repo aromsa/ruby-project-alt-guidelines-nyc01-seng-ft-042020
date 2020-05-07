@@ -51,11 +51,6 @@ end
         end
     end
 
-    # def recipes
-    #     Recipes.all.map do |recipes|
-    #         recipes.name
-    # end
-
     def new_recipe_greet
         puts "Go ahead and type update or create."
         input = gets.chomp
@@ -119,7 +114,6 @@ end
 
 
     def ingredient_greet
-        # I want this to include the ingredients of new recipe.
         puts "\nHello there!! Type an ingredient from the list below!\n
         \n"
         Ingredient.all.each do |ingredient|
