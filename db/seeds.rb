@@ -13,6 +13,7 @@ Recipe.create(name: "Grilled Salmon with Asparagus", directions: "Grill salmon a
 Recipe.create(name: "BBQ Chicked & Sweet Potato Fries", directions: "Marinate 2 chicken breast in 1/4 cup of BBQ sauce for 2 hours.  Meanwhile, chop sweet potatoes into uniform fry size.   Place sweet potatoes on a baking sheet and bake at 425 for 30 min.  Grill chicken breast at medium heat until internal temp reaches 165 degrees farenheit.", vegetarian: false, pescatarian: false, gluten_free: true)
 Recipe.create(name: "Oatmeal", directions: "test", vegetarian: true, pescatarian: true, gluten_free: true)
 Recipe.create(name: "Griled Cheese", directions: "test", vegetarian: true, pescatarian: true, gluten_free: false)
+Recipe.create(name: "Scrambled Eggs", directions: "test", vegetarian: true, pescatarian: true, gluten_free: true)
 
 salmon = Ingredient.create(name: "salmon")
 asparagus = Ingredient.create(name: "asparagus")
@@ -22,6 +23,7 @@ i5 = Ingredient.create(name: "sweet potato")
 i6 = Ingredient.create(name: "oatmenal")
 i7 = Ingredient.create(name: "bread")
 i8 = Ingredient.create(name: "cheese")
+i9 = Ingredient.create(name: "egg")
 
 RecipeIngredient.create(recipe: Recipe.first, ingredient: salmon)
 RecipeIngredient.create(recipe: Recipe.first, ingredient: asparagus)

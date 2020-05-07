@@ -1,3 +1,7 @@
+
+Deprecate.skip = true if defined?(Deprecate.skip)
+Gem::Deprecate.skip = true if defined?(Gem::Deprecate.skip)
+
 # frozen_string_literal: true
 source "https://rubygems.org"
 
