@@ -4,6 +4,9 @@ class CLI
     end
 end   
     def menu
+        # require "tty-prompt"
+        # prompt = TTY::Prompt.new
+        # first_menu = prompt.select("What would you like to do first", "Find a new Anime", "Edit my lists", "End")
         puts "\nHi!! Want to try a new recipe? Select one of the following, using numbers 1 - 6 to get started.\n 
         \n"
         puts "
