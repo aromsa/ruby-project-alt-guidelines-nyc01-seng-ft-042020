@@ -1,8 +1,39 @@
 class CLI
-    def run
-        menu
+    # def run
+    #     menu
+    # end
+
+    def self.greeting 
+        puts <<-Greeting                                        
+ 
+    ________________________________________________________
+    / \                                                       \.
+    |   |                                                      |.
+    \_ ..|               Welcome to ReciPlease!                 |.
+        |        Please sign in or create a new profile.       |.
+        |                                                      |.
+        |______________________________________________________|
+        |                           +                          |.
+        |          Sign In          +      Create Profile      |.
+        |                           +                          |.
+        |___________________________+__________________________|. 
+        |                                                      |.
+        |                                                      |.
+        |                                                      |.
+        |                                                      |.
+        |   ___________________________________________________|____
+        |  /                                                     /.
+        \_/_____________________________________________________/.
+
+    Greeting
     end
-end   
+
+    def self.sign_in_username_prompt
+        puts "                 Please enter your username."
+    end
+   
+end
+
     def menu
         # require "tty-prompt"
         # prompt = TTY::Prompt.new
@@ -33,36 +64,20 @@ end
             print_recipe_names(Recipe.gluten_free)
             menu
         when "4"
-            all_recipes
+            print_recipe_names(Recipe.all_recipes)
             menu
         when "5"
             ingredient_greet
         when "6"
-            new_recipe_greet
+            Recipe.new_recipe_greet
         else "menu"
             menu
         end
     end
 
-    def all_recipes
-        print_recipe_names(Recipe.all)
-    end
-
     def print_recipe_names(recipes)
         recipes.each do |recipe|
             puts recipe.name
-        end
-    end
-
-    def new_recipe_greet
-        puts "Go ahead and type update or create."
-        input = gets.chomp
-        if input === "create"
-            new_recipe
-        elsif input === "update"
-            update_recipe
-        else 
-            menu
         end
     end
 
@@ -168,3 +183,4 @@ end
         recipe = Recipe.last
         recipe.delete
     end
+
