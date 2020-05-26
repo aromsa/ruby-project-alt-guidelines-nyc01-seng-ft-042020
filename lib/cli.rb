@@ -26,6 +26,27 @@ class CLI
         \_/_____________________________________________________/.
 
     Greeting
+    input = gets.chomp.downcase
+    case input
+    when "create profile"
+        User.create_profile
+    when "2"
+        print_recipe_names(Recipe.vegetarian)
+        menu
+    when "3"
+        print_recipe_names(Recipe.gluten_free)
+        menu
+    when "4"
+        print_recipe_names(Recipe.all_recipes)
+        menu
+    when "5"
+        ingredient_greet
+    when "6"
+        Recipe.new_recipe_greet
+    else "menu"
+        menu
+    end
+
     end
 
     def self.sign_in_username_prompt
@@ -38,7 +59,7 @@ end
         # require "tty-prompt"
         # prompt = TTY::Prompt.new
         # first_menu = prompt.select("What would you like to do first", "Find a new Anime", "Edit my lists", "End")
-        puts "\nHi!! Want to try a new recipe? Select one of the following, using numbers 1 - 6 to get started.\n 
+        puts "\nWant to try a new recipe? Select one of the following, using numbers 1 - 6 to get started.\n 
         \n"
         puts "
         \u2022 1 \u2022  I am a pescatarian.\n
