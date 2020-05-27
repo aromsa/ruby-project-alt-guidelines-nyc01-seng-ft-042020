@@ -77,10 +77,12 @@ class User < ActiveRecord::Base
   # end
 
   def add_ingredients_to_grocery_list(recipe_name)
-    search = Recipe.find_by(name: recipe_name)
-    recipe = Recipe.where(id: search).first
-    recipe.ingredients.each{|i| GroceryList.create(user_id: self.id, recipe_id: i.id)}
-    # binding.pry
+    #recipe is a recipe ID, and recipe_name is just the recipe name.
+    #Have to find a way to fing recipe in RecipeIngredient by recipe name
+    search = RecipeIngredient.find_by(recipe: recipe_name)
+    recipe = RecipeIngredient.where(id: search).first
+    GroceryList.create(user_id: self.id, recipe_ingredient_id: recipe)
+    binding.pry
 
   end
 
