@@ -1,6 +1,7 @@
 class CLI
 
-  def self.greeting 
+  def self.greeting
+    system("clear")
     puts <<-Greeting                                        
  
     ________________________________________________________
@@ -46,7 +47,7 @@ class CLI
     / \                                                       \.
     |   |                                                      |.
     \_ ..|                                                      |.
-        |                                                      |.
+        |                       Goodbye!                       |.
         |            Thank you for using ReciPlease!           |.
         |                                                      |.
         |                                                      |.
@@ -60,40 +61,34 @@ class CLI
   end
 
   def self.menu
-    require "tty-prompt"
     prompt = TTY::Prompt.new
-    menu = prompt.select("Want to try a new recipe? Select one of the following", "I am a pescatarian.", "I am a vegetarian.", "I am gluten free.", "I eat everything.","I want a random recipe based on an ingredient.", "I want to create or update a recipe.")
+    menu = prompt.select("Want to try a new recipe? Select one of the following (scroll down to Exit):", "I am a pescatarian.", "I am a vegetarian.", "I am gluten free.", "I eat everything.","I want a random recipe based on an ingredient.", "I want to create or update a recipe.", "Exit")
     case menu
     when menu = "I am a pescatarian."
-      print_recipe_names(Recipe.pescatarian)
+      Recipe.pescatarian
             # menu
-    when "2"
-      print_recipe_names(Recipe.vegetarian)
+    when menu = "I am a vegetarian."
+      Recipe.vegetarian
             # menu
-    when "3"
-      print_recipe_names(Recipe.gluten_free)
+    when menu = "I am gluten free."
+      Recipe.gluten_free
             # menu
-    when "4"
-      print_recipe_names(Recipe.all_recipes)
+    when menu = "I eat everything."
+      Recipe.all_recipes
             # menu
-    when "5"
+    when menu = "I want a random recipe based on an ingredient."
       ingredient_greet
-    when "6"
+    when menu = "I want to create or update a recipe."
       Recipe.new_recipe_greet
         # else "menu"
         #     menu
+    when menu = "Exit"
+      CLI.exit_app
     end
   end
 
 end   
-    
-
-
-    def print_recipe_names(recipes)
-        recipes.each do |recipe|
-            puts recipe.name
-        end
-    end
+  
 
     def new_recipe
         puts "Ooh a new recipe!!  To get started, enter the name of your recipe."
@@ -199,6 +194,12 @@ end
     end
 
 
+
+    # def print_recipe_names(recipes)
+    #     recipes.each do |recipe|
+    #         puts recipe.name
+    #     end
+    # end
 
       
         # puts "\nWant to try a new recipe? Select one of the following, using numbers 1 - 6 to get started.\n 
