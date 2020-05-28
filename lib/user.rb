@@ -87,18 +87,21 @@ class User < ActiveRecord::Base
   end
 
   def user_menu
-    #have to create path for BACK TO PREVIOUS MENU
     prompt = TTY::Prompt.new
     menu = prompt.select("What would you like to do next #{self.name}?", "Browse Recipes", "View Favorites", "View Grocery List", "Exit")
     case menu
-    when menu = "Browse recipes"
-      puts "Browse recipes"
+    when menu = "Browse Recipes"
+      CLI.menu
     when menu = "View Favorites"
       a = self.recipes.map{|r| r.name}
-      #make multiple selection 
+      #make multiple selection?
       input = prompt.multi_select("Select one of your Favorite Recipes to add the ingredients to your Grocery List:", a, "Back to previous menu.")
           self.add_ingredients_to_grocery_list(input)
-          # binding.pry
+          # The above is not working yet. See method. 
+    when menu = "View Grocery List"
+      #still need to build this out.
+    when menu = "Exit"
+      CLI.exit_app
     return
     end
   end

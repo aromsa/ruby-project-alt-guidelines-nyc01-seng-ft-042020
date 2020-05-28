@@ -12,11 +12,8 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
-    input = prompt.select("Select one of the following to add to your Favorite Recipe list.", a, "Back to previous menu.")  
-    included = a.include?(input)
-      if included
-        Recipe.find_recipe_by_recipe_name(input)
-    end
+    input = prompt.select("Select one of the following to see the directions and ingredients.", a, "Back to previous menu.")  
+    Recipe.find_recipe_by_recipe_name(input)
   end
 
   def self.vegetarian
@@ -26,7 +23,11 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
-    menu = prompt.select("Select one of the following to add to your Favorite Recipe list.", a, "Back to previous menu.")
+    input = prompt.select("Select one of the following to add to your Favorite Recipe list.", a, "Back to previous menu.")  
+    included = a.include?(input)
+      if included
+        Recipe.find_recipe_by_recipe_name(input)
+    end
   end 
     
   def self.gluten_free

@@ -58,6 +58,7 @@ class CLI
         \_/_____________________________________________________/.
 
     Goodbye
+    exit(true)
   end
 
   def self.menu
