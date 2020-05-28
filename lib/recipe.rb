@@ -13,7 +13,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
-    input = prompt.select("Select one of the following to see the directions and ingredients.", a, "Back to previous menu.")  
+    input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end
 
@@ -23,7 +23,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
-    input = prompt.select("Select one of the following to see the directions and ingredients.", a, "Back to previous menu.")  
+    input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end 
     
@@ -33,7 +33,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
-    input = prompt.select("Select one of the following to see the directions and ingredients.", a, "Back to previous menu.")  
+    input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end
 
@@ -43,7 +43,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
-    input = prompt.select("Select one of the following to see the directions and ingredients.", a, "Back to previous menu.")  
+    input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end
 
@@ -81,7 +81,7 @@ class Recipe < ActiveRecord::Base
       puts ""
       "#{a.each{|a| puts a}}"
     # end
-    $user.add_to_favorites(rcp)
+    User.add_to_favorites(rcp)
   # end 
   end
 

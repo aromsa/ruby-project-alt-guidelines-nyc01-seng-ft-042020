@@ -113,6 +113,7 @@ end
                     ingriedient_names.each do |ingredient_name|
                         ingredient = Ingredient.find_or_create_by(:name => ingredient_name)
                         recipe.ingredients << ingredient
+                        puts "Your ingredients have been added to #{input_a}."
                         # times {BEGIN {puts "Your ingredients have been added to #{input_a}."}}
                         #trying to figure out a way to only puts this once rather than
                         #for every ingredient.
@@ -144,6 +145,8 @@ end
 
 
     def ingredient_greet
+        # prompt = TTY::Prompt.new
+        # menu = prompt.select("Select an ingredient:")
         puts "\nHello there!! Type an ingredient from the list below!\n
         \n"
         Ingredient.all.each do |ingredient|

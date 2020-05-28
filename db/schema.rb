@@ -10,16 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_225816) do
+ActiveRecord::Schema.define(version: 2020_05_28_185018) do
 
   create_table "favorite_recipes", force: :cascade do |t|
     t.integer "user_id"
     t.integer "recipe_id"
   end
 
+  create_table "grocery_ingredients", force: :cascade do |t|
+    t.integer "grocery_list_id"
+    t.integer "recipe_ingredient_id"
+  end
+
   create_table "grocery_lists", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "recipe_ingredient_id"
   end
 
   create_table "ingredients", force: :cascade do |t|

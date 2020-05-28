@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   has_many :favorite_recipes
   has_many :recipes, through: :favorite_recipes
-  has_many :grocery_lists
-  has_many :recipe_ingredients, through: :grocery_lists
+  has_one :grocery_list
+  has_many :grocery_ingredients, through: :grocery_list
   
   def self.create_profile
     prompt = TTY::Prompt.new
@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
       puts ""
       puts ""
       sleep(2)
-      CLI.menu
+      $user.user_menu_a
       else 
       puts "Incorrect Password."
       sleep(3)
@@ -55,16 +55,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  def add_to_favorites(recipe)
+  def self.add_to_favorites(recipe)
     prompt = TTY::Prompt.new
     puts ""
     puts ""
     input = prompt.select('Would you like to add this recipe to your Favorite Recipes list?', "Yes", "No")
     case input
     when input = "Yes"
-      FavoriteRecipe.create(user_id: self.id, recipe_id: recipe.id)
+      FavoriteRecipe.create(user_id: $user.id, recipe_id: recipe.id)
+      puts ""
       puts "Great!  #{recipe.name} has been added to your Favorite Recipes."
-      $user.user_menu
+      puts ""
+      $user.user_menu_b
     when input = "No"
       puts ""
       CLI.menu
@@ -80,38 +82,82 @@ class User < ActiveRecord::Base
     rcp = Recipe.all.find do |recipe|
       recipe.name == recipe_name
     end
-    #recipe is a recipe ID, and recipe_name is just the recipe name.
-    #Have to find a way to fing recipe in RecipeIngredient by recipe name
-    a = RecipeIngredient.all.select do |ri|
-      ri.recipe_id == rcp.id
+    gl = GroceryList.find_or_create_by(user_id: self.id)
+    RecipeIngredient.all.each do |ri|
+      if ri.recipe_id == rcp.id
+        GroceryIngredient.create(grocery_list_id: gl.id, recipe_ingredient_id: ri.id)
+      end
     end
-    a.each do |a|
-    GroceryList.create(user_id: self.id, recipe_ingredient_id: a.id)
-  end
-  puts "The ingredients have been added to your grocery list."
-  self.user_menu
+    puts""
+    puts "The ingredients have been added to your grocery list."
+    self.user_menu_b
   end
 
-  def user_menu
+  def update_user_name
     prompt = TTY::Prompt.new
-    menu = prompt.select("What would you like to do next #{self.name}?", "Browse Recipes", "View Favorites", "View Grocery List", "Exit")
+    name = prompt.ask("Hi #{self.name}! Please type your new name/username and hit enter to save.")
+    self.name = name
+    puts "Okay!  Your new username is #{self.name}."
+    self.user_menu_b
+  end
+
+  def delete_account
+    self.destroy
+    puts "Were sad to see you go #{self.name}!"
+    CLI.exit_app
+  end
+
+  def user_menu_a
+    prompt = TTY::Prompt.new
+    menu = prompt.select("What would you like to do?", "Browse Recipes", "Update Name/Username", "Delete Reciplease Account")
+    case menu
+    when menu = "Browse Recipes"
+      CLI.menu
+    when menu = "Update Name/Username"
+      self.update_user_name 
+    when menu = "Delete Reciplease Account"
+      self.delete_account
+    end
+  end
+
+  def user_menu_b
+    prompt = TTY::Prompt.new
+    puts ""
+    menu = prompt.select("What would you like to do next #{self.name}?", "Browse Recipes", "View Favorites", "View Grocery List", "Main Menu", "Exit")
     case menu
     when menu = "Browse Recipes"
       CLI.menu
     when menu = "View Favorites"
       a = self.recipes.map{|r| r.name}.uniq
-      input = prompt.select("Select one of your Favorite Recipes to add the ingredients to your Grocery List:", a, "Back to previous menu.")
+      input = prompt.select("Select one of your Favorite Recipes to add the ingredients to your Grocery List:", a)
           self.add_ingredients_to_grocery_list(input)  
     when menu = "View Grocery List"
-      # self.grocery_list.each do |ri|
-      #   ri.ingredient_id
-      # end
+      self.grocery_list_ingredients
+    when menu = "Main Menu"
+      self.user_menu_a
     when menu = "Exit"
       CLI.exit_app
     return
   end
 end
 
-
+def grocery_list_ingredients
+  a = self.grocery_ingredients.map do |gi|
+    gi.recipe_ingredient_id
+  end
+  b = RecipeIngredient.find(a).map do |ri|
+    ri.ingredient_id 
+  end
+  c = Ingredient.all.find(b).map do |i|
+    i.name
+  end
+  system("clear")
+  puts ""
+  puts "Grocery List:"
+  puts ""
+  puts c
+  puts ""
+  self.user_menu_b
+end
 
 end
