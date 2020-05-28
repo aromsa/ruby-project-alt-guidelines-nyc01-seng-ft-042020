@@ -77,13 +77,19 @@ class User < ActiveRecord::Base
   # end
 
   def add_ingredients_to_grocery_list(recipe_name)
+    rcp = Recipe.all.find do |recipe|
+      recipe.name == recipe_name
+    end
     #recipe is a recipe ID, and recipe_name is just the recipe name.
     #Have to find a way to fing recipe in RecipeIngredient by recipe name
-    search = RecipeIngredient.find_by(recipe: recipe_name)
-    recipe = RecipeIngredient.where(id: search).first
-    GroceryList.create(user_id: self.id, recipe_ingredient_id: recipe)
-    binding.pry
-
+    a = RecipeIngredient.all.select do |ri|
+      ri.recipe_id == rcp.id
+    end
+    a.each do |a|
+    GroceryList.create(user_id: self.id, recipe_ingredient_id: a.id)
+  end
+  puts "The ingredients have been added to your grocery list."
+  self.user_menu
   end
 
   def user_menu
@@ -93,17 +99,19 @@ class User < ActiveRecord::Base
     when menu = "Browse Recipes"
       CLI.menu
     when menu = "View Favorites"
-      a = self.recipes.map{|r| r.name}
-      #make multiple selection?
-      input = prompt.multi_select("Select one of your Favorite Recipes to add the ingredients to your Grocery List:", a, "Back to previous menu.")
-          self.add_ingredients_to_grocery_list(input)
-          # The above is not working yet. See method. 
+      a = self.recipes.map{|r| r.name}.uniq
+      input = prompt.select("Select one of your Favorite Recipes to add the ingredients to your Grocery List:", a, "Back to previous menu.")
+          self.add_ingredients_to_grocery_list(input)  
     when menu = "View Grocery List"
-      #still need to build this out.
+      # self.grocery_list.each do |ri|
+      #   ri.ingredient_id
+      # end
     when menu = "Exit"
       CLI.exit_app
     return
-    end
   end
+end
+
+
 
 end
