@@ -99,7 +99,16 @@ class Recipe < ActiveRecord::Base
     input_a = gets.chomp
     recipe = Recipe.create(name: input_a)
     puts ""
-    puts "Yeerm!!  Now type out the directions."
+    puts <<-Chef
+  
+    .--,--.
+    `.  ,.'   
+     |___|   
+     :o o:    Yeerm!!  Now type out the directions.
+    _`~^~'_   
+  /'   ^   `\
+    
+    Chef
     input_b = gets.chomp
     recipe.directions = input_b
     puts ""

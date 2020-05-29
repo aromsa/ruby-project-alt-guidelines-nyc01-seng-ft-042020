@@ -120,7 +120,7 @@ class User < ActiveRecord::Base
 
   def user_menu_a
     prompt = TTY::Prompt.new
-    menu = prompt.select("What would you like to do?", "Browse Recipes", "Update Name/Username", "Delete Reciplease Account", "Exit")
+    menu = prompt.select("Please select one of the following.", "Browse Recipes", "Update Name/Username", "Delete Reciplease Account", "Exit")
     case menu
     when menu = "Browse Recipes"
       CLI.menu
