@@ -81,13 +81,9 @@ class User < ActiveRecord::Base
     when input = "No"
       puts ""
       CLI.menu
-      return
+    return
     end
   end
-
-  # def favorite_recipes_ingredients(recipe)
-  #   self.recipes.map{|r| r.ingredients}.flatten.uniq
-  # end
 
   def add_ingredients_to_grocery_list(recipe_name)
     rcp = Recipe.all.find do |recipe|
@@ -151,27 +147,27 @@ class User < ActiveRecord::Base
     when menu = "Exit"
       CLI.exit_app
     return
+    end
   end
-end
 
-def grocery_list_ingredients
-  a = self.grocery_ingredients.map do |gi|
-    gi.recipe_ingredient_id
-  end
-  b = RecipeIngredient.find(a).map do |ri|
-    ri.ingredient_id 
-  end
-  c = Ingredient.all.find(b).map do |i|
-    i.name
-  end
-  system("clear")
-  puts ""
-  puts "Grocery List:"
-  puts ""
-  puts c
-  puts ""
+  def grocery_list_ingredients
+    a = self.grocery_ingredients.map do |gi|
+      gi.recipe_ingredient_id
+    end
+    b = RecipeIngredient.find(a).map do |ri|
+      ri.ingredient_id 
+    end
+    c = Ingredient.all.find(b).map do |i|
+      i.name
+    end
+    system("clear")
+    puts ""
+    puts "Grocery List:"
+    puts ""
+    puts c
+    puts ""
   self.user_menu_b
-end
+  end
 
 end
 
