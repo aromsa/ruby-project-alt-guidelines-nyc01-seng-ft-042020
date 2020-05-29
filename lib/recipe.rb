@@ -13,6 +13,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
+    puts ''
     input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end
@@ -23,6 +24,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
+    puts ''
     input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end 
@@ -33,6 +35,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
+    puts ''
     input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end
@@ -43,6 +46,7 @@ class Recipe < ActiveRecord::Base
     a = recipes.map do |r| 
       r.name
     end
+    puts ''
     input = prompt.select("Select one of the following to see the directions and ingredients.", a)  
     Recipe.find_recipe_by_recipe_name(input)
   end

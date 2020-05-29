@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
       puts "Great!  You are all set #{User.last.name}! Your password has been saved."
     end
     system("clear")
-    CLI.menu
+    User.sign_in
   end
 
   def incorrect_password_characters
@@ -29,20 +29,31 @@ class User < ActiveRecord::Base
     end
     User.last.update(password: input)
     puts "Great!  You are all set #{User.last.name}! Your password has been saved."
-    CLI.menu
+    User.sign_in
   end
 
   def self.sign_in
     prompt = TTY::Prompt.new
-    user_name = prompt.ask('Please enter your user name:') 
-    password = prompt.mask("Please enter your case-sensitive password:")
+    system("clear")
+    puts <<-Chef
+
+    .--,--.
+    `.  ,.'   
+     |___|   
+     :o o:    Please sign in to get started!
+    _`~^~'_   
+  /'   ^   `\
+
+    Chef
+    user_name = prompt.ask('Enter your user name:') 
+    password = prompt.mask("Enter your case-sensitive password:")
     search = User.find_by(name: user_name.titleize, password: password)
     $user = User.where(id: search).first
     if $user
       system("clear")
       puts ""
       puts ""
-      puts "Welcome back #{user_name.titleize}! You are now signed in."
+      puts "Hi #{user_name.titleize}! You are now signed in."
       puts ""
       puts ""
       sleep(2)
@@ -82,7 +93,7 @@ class User < ActiveRecord::Base
     rcp = Recipe.all.find do |recipe|
       recipe.name == recipe_name
     end
-    gl = GroceryList.find_or_create_by(user_id: self.id)
+    gl = GroceryList.find_or_create_by(user_id: $user.id)
     RecipeIngredient.all.each do |ri|
       if ri.recipe_id == rcp.id
         GroceryIngredient.create(grocery_list_id: gl.id, recipe_ingredient_id: ri.id)
@@ -163,3 +174,5 @@ def grocery_list_ingredients
 end
 
 end
+
+

@@ -8,6 +8,7 @@ Ingredient.delete_all
 RecipeIngredient.delete_all
 FavoriteRecipe.delete_all
 GroceryList.delete_all
+GroceryIngredient.delete_all
 
 u1 = User.create(name: Faker::Name.name)
 u2 = User.create(name: Faker::Name.name)
@@ -44,6 +45,7 @@ f1 = FavoriteRecipe.create(user: u1, recipe:r1)
 f2 = FavoriteRecipe.create(user: u2, recipe:r3)
 f3 = FavoriteRecipe.create(user: u2, recipe:r5)
 f4 = FavoriteRecipe.create(user: u4, recipe:r5)
+f5 = FavoriteRecipe.create(user: u5, recipe:r2)
 
 
 
