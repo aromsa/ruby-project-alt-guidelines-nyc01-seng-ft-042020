@@ -48,14 +48,14 @@ class Recipe < ActiveRecord::Base
   end
 
   def self.new_recipe_greet
-    puts "Go ahead and type update or create."
-    input = gets.chomp
-    if input === "create"
-      new_recipe
-    elsif input === "update"
-      update_recipe
-    else 
-      menu
+    system("clear")
+    prompt = TTY::Prompt.new
+    input = prompt.select("Please select update or create.", "Update", "Create")
+    case input
+    when input = "Update"
+      Recipe.update_recipe
+    when input = "Create"
+      Recipe.new_recipe
     end
   end
 
@@ -88,6 +88,78 @@ class Recipe < ActiveRecord::Base
   def self.ingredient_names(ingredients)
     ingredients.map{|i| i.name}
   end
+
+  def self.new_recipe
+    prompt = TTY::Prompt.new
+    puts "Ooh a new recipe!!  To get started, enter the name of your recipe."
+    input_a = gets.chomp
+    recipe = Recipe.create(name: input_a)
+    puts ""
+    puts "Yeerm!!  Now type out the directions."
+    input_b = gets.chomp
+    recipe.directions = input_b
+    puts ""
+    input_c = prompt.select("Great!  Plese select save to save your recipe, or delete to start over.", "Save", "Delete")
+    # puts "Great!  Would you like to save your recipe or delete it?  Type save or delete below."
+    # input_c = gets.chomp
+    case input_c
+    when input_c = "Save"
+        recipe.save
+            puts ""
+            puts "Your recipe titled #{input_a} has been saved!"
+            input_d = prompt.select("Would you like to add ingredients?", "Yes", "No")
+            # puts "Would you like to add ingredients? y/n"
+            # input_d = gets.strip.downcase
+            case input_d
+            when input_d = "Yes"
+            # if input_d == "y"
+                puts "Great, enter ingredients in a comma seperated list:"
+                input_e = gets.strip.downcase
+                ingriedient_names = input_e.split(",").collect{|w| w.strip.downcase}
+                ingriedient_names.each do |ingredient_name|
+                    ingredient = Ingredient.find_or_create_by(:name => ingredient_name)
+                    recipe.ingredients << ingredient
+                    # puts "Your ingredients have been added to #{input_a}."
+                    # 1.times {BEGIN {puts "Your ingredients have been added to #{input_a}."}}
+                    #trying to figure out a way to only puts this once rather than
+                    #for every ingredient.
+                end
+                puts "Your ingredients have been added to #{input_a}."
+            end
+         when input_c = "Delete"
+            Recipe.delete_recipe
+            puts "Your recipe titled #{input_a} has been deleted."
+        end
+    $user.user_menu_a
+end
+
+def self.delete_recipe
+  recipe = Recipe.last
+  recipe.delete
+end
+
+def self.update_recipe
+  prompt = TTY::Prompt.new
+  recipes = Recipe.all
+    a = recipes.map do |r| 
+      r.name
+    end
+  input = prompt.select("Updates!!  I love updates!  Select from following recipes", a) 
+  # puts "Updates!!  I love updates!  Select from following recipes by typing it below."
+  # print_recipe_names(Recipe.all)
+
+  # input = gets.chomp
+  recipe = Recipe.find_by(:name => input)
+  # if recipe
+      puts "Okay, lets update the recipe named #{recipe.name}.  Type the new name below."
+      new_name = gets.strip
+      recipe.update(:name => new_name)
+      puts "Your recipe is now called #{new_name}!"
+      $user.user_menu_a
+  # else 
+  #     puts "Hmmm, I can't seem to find that recipe.  Please select a recipe from the list."
+  # $user.user_menu_a
+end
 
 end
 

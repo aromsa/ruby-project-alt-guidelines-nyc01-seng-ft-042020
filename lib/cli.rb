@@ -91,100 +91,82 @@ class CLI
 end   
   
 
-    def new_recipe
-        puts "Ooh a new recipe!!  To get started, enter the name of your recipe."
-        input_a = gets.chomp
-        recipe = Recipe.create(name: input_a)
-        puts "Yeerm!!  Now type out the directions."
-        input_b = gets.chomp
-        recipe.directions = input_b
-        puts "Great!  Would you like to save your recipe or delete it?  Type save or delete below."
-        input_c = gets.chomp
-            if input_c === "save"
-                recipe.save
-                puts "Your recipe titled #{input_a} has been saved!"
-                puts "Would you like to add ingredients? y/n"
-                input_d = gets.strip.downcase
-                if input_d == "y"
-                    puts "Great, enter ingredients in a comma seperated list:"
-                    input_e = gets.strip.downcase
+    # def new_recipe
+    #     puts "Ooh a new recipe!!  To get started, enter the name of your recipe."
+    #     input_a = gets.chomp
+    #     recipe = Recipe.create(name: input_a)
+    #     puts "Yeerm!!  Now type out the directions."
+    #     input_b = gets.chomp
+    #     recipe.directions = input_b
+    #     puts "Great!  Would you like to save your recipe or delete it?  Type save or delete below."
+    #     input_c = gets.chomp
+    #         if input_c === "save"
+    #             recipe.save
+    #             puts "Your recipe titled #{input_a} has been saved!"
+    #             puts "Would you like to add ingredients? y/n"
+    #             input_d = gets.strip.downcase
+    #             if input_d == "y"
+    #                 puts "Great, enter ingredients in a comma seperated list:"
+    #                 input_e = gets.strip.downcase
                     
-                    ingriedient_names = input_e.split(",").collect{|w| w.strip.downcase}
-                    ingriedient_names.each do |ingredient_name|
-                        ingredient = Ingredient.find_or_create_by(:name => ingredient_name)
-                        recipe.ingredients << ingredient
-                        puts "Your ingredients have been added to #{input_a}."
-                        # times {BEGIN {puts "Your ingredients have been added to #{input_a}."}}
-                        #trying to figure out a way to only puts this once rather than
-                        #for every ingredient.
-                    end
-                end
-            elsif input_c === "delete"
-                delete_recipe
-                puts "Your recipe titled #{input_a} has been deleted."
-            end
-        menu
-    end
+    #                 ingriedient_names = input_e.split(",").collect{|w| w.strip.downcase}
+    #                 ingriedient_names.each do |ingredient_name|
+    #                     ingredient = Ingredient.find_or_create_by(:name => ingredient_name)
+    #                     recipe.ingredients << ingredient
+    #                     puts "Your ingredients have been added to #{input_a}."
+    #                     # times {BEGIN {puts "Your ingredients have been added to #{input_a}."}}
+    #                     #trying to figure out a way to only puts this once rather than
+    #                     #for every ingredient.
+    #                 end
+    #             end
+    #         elsif input_c === "delete"
+    #             delete_recipe
+    #             puts "Your recipe titled #{input_a} has been deleted."
+    #         end
+    #     menu
+    # end
     
-    def update_recipe
-        puts "Updates!!  I love updates!  Select from following recipes by typing it below."
-        print_recipe_names(Recipe.all)
+    # def update_recipe
+    #     puts "Updates!!  I love updates!  Select from following recipes by typing it below."
+    #     print_recipe_names(Recipe.all)
 
-        input = gets.chomp
-        recipe = Recipe.find_by(:name => input)
-        if recipe
-            puts "Okay, lets update the recipe named #{recipe.name}.  Type the new name below."
-            new_name = gets.strip
-            recipe.update(:name => new_name)
-            puts "Your recipe is now called #{new_name}!"
-            menu
-        else 
-            puts "Hmmm, I can't seem to find that recipe.  Please select a recipe from the list."
-        end
-    end
+    #     input = gets.chomp
+    #     recipe = Recipe.find_by(:name => input)
+    #     if recipe
+    #         puts "Okay, lets update the recipe named #{recipe.name}.  Type the new name below."
+    #         new_name = gets.strip
+    #         recipe.update(:name => new_name)
+    #         puts "Your recipe is now called #{new_name}!"
+    #         menu
+    #     else 
+    #         puts "Hmmm, I can't seem to find that recipe.  Please select a recipe from the list."
+    #     end
+    # end
 
 
     def ingredient_greet
-        # prompt = TTY::Prompt.new
-        # menu = prompt.select("Select an ingredient:")
-        puts "\nHello there!! Type an ingredient from the list below!\n
-        \n"
-        Ingredient.all.each do |ingredient|
-            puts "\u2022 #{ingredient.name} \u2022
-            \n"
+        prompt = TTY::Prompt.new
+        a = Ingredient.all.map do |ingredient|
+             ingredient.name
         end
-        ingredient_selection
-    end
-
-    def ingredient_selection
-        input = gets.chomp 
-        included = ingredients.include?(input)
-        if included
-            find_recipe_by_ingredient(input)
-            menu
-        elsif 
-            puts "Hmmm, I can't seem to find that ingredient.  Please select an ingredient from the list."
-            ingredient_greet
-        else
-            menu
-        end
+        input = prompt.select("Select an ingredient (keep scrolling down for more):", a)
+        find_recipe_by_ingredient(input)
     end
     
     def find_recipe_by_ingredient(i=nil)
+        prompt = TTY::Prompt.new
         Ingredient.all.select do |ingredient|
             if ingredient.name == i
-                ingredient.recipes.each do |recipe|
-                    puts recipe.name
+                r = ingredient.recipes.find do |recipe|
+                    recipe.name
                     #I want to add directions and ingredient here too. 
                 end
+                # input = prompt.select("Select a recipe to see the directions and ingredients.", a)  
+                Recipe.find_recipe_by_recipe_name(r.name)
             end
         end
     end 
 
-    def back_to_menu
-        greet
-        menu
-    end
     
     def ingredients
         Ingredient.all.map do |ingredient|
@@ -192,11 +174,30 @@ end
         end
     end
 
-    def delete_recipe
-        recipe = Recipe.last
-        recipe.delete
-    end
+     # def back_to_menu
+    #     greet
+    #     menu
+    # end
 
+    # def delete_recipe
+    #     recipe = Recipe.last
+    #     recipe.delete
+    # end
+
+
+    # def ingredient_selection(input)
+    #     input = gets.chomp 
+    #     included = ingredients.include?(input)
+    #     if included
+    #         find_recipe_by_ingredient(input)
+    #         menu
+    #     elsif 
+    #         puts "Hmmm, I can't seem to find that ingredient.  Please select an ingredient from the list."
+    #         ingredient_greet
+    #     else
+    #         menu
+    #     end
+    # end
 
 
     # def print_recipe_names(recipes)
